@@ -20,7 +20,13 @@
   
     <select id ="list-services"></select>
     <div id="mapView"></div>
-
+    <div style ="background-color: white;" id='etiqueta'> 
+        <h1> Mapa Elementos medio ambiente Bogota</h1>
+        <p>Esta aplicacion desarrollada con el api version 4.9  recopila una serie de mapas obtenidos por medio del servicio rest
+            de la secretaria de ambiente:<strong> http://secretariadeambiente.gov.co/arcgis/rest/services/</strong>, la aplicacion pretende mostrar de en un mapa de bogota una serie de factores referenciados geograficamente que muestran la calidad del desarrollo de la ciudad para el objetivo de <strong>"Ciudades y comunidades sostenibles"</strong>.
+            Creado por: Fabian Herrera, Luis Mendez.
+        </p>
+    </div>
     <script src="https://js.arcgis.com/4.9/"></script>
     <script>
         let map;      
@@ -32,14 +38,14 @@
             "esri/views/MapView",
             "esri/request",
             "esri/layers/MapImageLayer",
-            "esri/widgets/Legend",
-            "esri/layers/FeatureLayer", 
-            "esri/layers/TileLayer", 
-            "esri/widgets/Legend",
-            "esri/widgets/Expand",
-             
             
-        ], function(Map, MapView,  Request, MapImageLayer, Legend, FeatureLayer, TileLayer, Legend, Expand) {
+            "esri/layers/FeatureLayer", 
+            "esri/layers/TileLayer",
+            "esri/widgets/Legend",
+            "esri/widgets/LayerList", 
+            "esri/widgets/Expand"           
+        ], function(Map, MapView,  Request, MapImageLayer, FeatureLayer, TileLayer, Legend,LayerList, Expand) {
+
              map = new Map ({
                 basemap: "topo"
             });
@@ -55,54 +61,67 @@
       
 				// Add widget to the top right corner of the view
 				
-            let layer0 = new TileLayer({
-                url: "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Agua_WQI/Cal_Agua_WQI/MapServer?f=pjson"
+
+            let calidadAgua = new TileLayer({
+                url: "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Agua_WQI/Cal_Agua_WQI/MapServer?f=pjson",
+                visible:false
 
             });
             
-             let layerdetA = new FeatureLayer({
-                url: "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Determinantes_Ambientales/Determinantes_Amb/MapServer/3"
+             let deterAmb = new FeatureLayer({
+                url: "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Determinantes_Ambientales/Determinantes_Amb/MapServer/3",
+                visible:false
+
                 
 
             });
 
              let layerTemp = new FeatureLayer({
              	url: "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Aire/Cal_Aire/MapServer/17"
-
              });
 
             let layer = new FeatureLayer({
-                url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Aire/Cal_Aire/MapServer/1"
-            });
-            let layer2 = new FeatureLayer({
-                url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Aire/Cal_Aire/MapServer/3"
-
+                url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Aire/Cal_Aire/MapServer/1",
+                visible:false
             });
 
+            let calAire3 = new FeatureLayer({
+                url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Aire/Cal_Aire/MapServer/3",
+                 visible:false
 
-            let layer3 = new TileLayer({
-                url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Educacion/Recorridos_Ecologicos/MapServer"
+
+            });
+
+
+            let recorr = new TileLayer({
+                url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Educacion/Recorridos_Ecologicos/MapServer",
+                visible:false
+
             });
             
              
-          
-            let layer4 = new TileLayer({
-                url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Participacion/Participacion_TerrAmb/MapServer"
+            let pTerr = new TileLayer({
+                url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Participacion/Participacion_TerrAmb/MapServer",
+                visible:false
             });
             //
-            let layer5 = new MapImageLayer({
-                url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Suelo/Cal_Suelo_Gen_RCD/MapServer"
+            let cSueloR = new MapImageLayer({
+                url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Suelo/Cal_Suelo_Gen_RCD/MapServer",
+                 visible:false
             });
 
-            let layer6 = new MapImageLayer({
-                url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Suelo/Cal_Suelo_Respel_Hosp/MapServer"
+            let cSueloHosp = new MapImageLayer({
+                url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Suelo/Cal_Suelo_Respel_Hosp/MapServer",
+                 visible:false
             });
 
-            let layer7 = new MapImageLayer({
-                url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Suelo/Cal_Suelo_Respel_Indust/MapServer"
+            let cSueloIndus = new MapImageLayer({
+                url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Suelo/Cal_Suelo_Respel_Indust/MapServer",
+                visible:false
             });
-            let layer8 = new MapImageLayer({
-                url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Suelo/Cal_Suelo_Sitio_Dispos_2017/MapServer"
+            let calidadSuelo = new MapImageLayer({
+                url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Suelo/Cal_Suelo_Sitio_Dispos_2017/MapServer",
+                visible:false
             });
 
 
@@ -110,38 +129,58 @@
            
              
             let layerArboles = new TileLayer({
-            	url:"http://www.secretariadeambiente.gov.co/arcgis/rest/services/Arbolado_Urbano/SIA_SIGAU/MapServer"
+            	url:"http://www.secretariadeambiente.gov.co/arcgis/rest/services/Arbolado_Urbano/SIA_SIGAU/MapServer",
+            	visible:false
             });
-
+            
             map.add(layer);
-            map.add(layer0);
-            map.add(layer2);
-            map.add(layer3);
-            map.add(layer4);
-            map.add(layerdetA);
+            map.add(calidadAgua);
+            map.add(calAire3);
+            map.add(recorr);
+            map.add(pTerr);
+            map.add(deterAmb);
             map.add(layerTemp);
             map.add(layerArboles);
-            map.add(layer5);
-             map.add(layer6);
-             map.add(layer7);
-             map.add(layer8);
+            map.add(cSueloR);
+            map.add(cSueloHosp);
+            map.add(cSueloIndus);
+            map.add(calidadSuelo);
 
              //let leg  = new Legend({
               //  view: mapView
              //});
            //  mapView.ui.add(leg);
-        var node = domConstruct.create("div", {
-            innerHTML: "I'm a real node!"
-        });
-             const legend = new Expand({
-                content:node,
-                
-                view: mapView,
-                expanded: true
-                });
 
+
+           
         
-        mapView.ui.add(legend, "bottom-left");
+        
+
+            let leg  = new Legend({
+                view: mapView
+            });
+
+            let list = new LayerList({
+            	view:mapView
+            });
+            
+
+            var  logo= document.createElement("div");
+            logo.appendChild(document.createTextNode("CLICK ME"));
+            logo= document.getElementById("etiqueta");
+            var expand1 = new Expand({
+                  view: mapView,
+                  content: logo,
+                  expandIconClass: "esri-icon-basemap",
+                  group: "bottom-right",
+                  expanded:true
+                });
+            mapView.ui.add(leg,"bottom-right");
+            mapView.ui.add(expand1, "top-right");
+            mapView.ui.add(list, "top-left");
+            
+            
+
          
              
 });
@@ -149,5 +188,6 @@
                  
   
     </script>
+
 </body>
-</html>
+</html>;
