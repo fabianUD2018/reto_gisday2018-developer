@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mapa 2D</title>
+
+    <link rel="stylesheet" href="https://js.arcgis.com/4.9/esri/css/main.css">
+    <style>
+        html, body, #mapView {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+  
+    <select id ="list-services"></select>
+    <div id="mapView"></div>
+
+    <script src="https://js.arcgis.com/4.9/"></script>
+    <script>
+        let map;
+        let map2;
+        let mapView;
+        let url;
+        require([
+            "esri/Map",
+            "esri/views/MapView",
+            "esri/request",
+            "esri/layers/MapImageLayer",
+            "esri/widgets/Legend",
+            "esri/layers/FeatureLayer", 
+            "esri/layers/TileLayer", 
+            
+        ], function(Map, MapView, Request, MapImageLayer, Legend, FeatureLayer, TileLayer) {
+             map = new Map ({
+                basemap: "topo"
+            });
+             map2 = new Map ({
+                basemap: "satellite"
+            });
+            map3 = new Map ({
+                basemap: "streets"
+            });
+             mapView = new MapView ({
+                container: "mapView",
+                map: map, 
+                //c1enter:
+                zoom:10,
+                //scale:
+                center: [ -74.24553297285672,4.50456330479986]
+            });
+             // let layer = new MapImageLayer({
+             //                    //url:"http://www.secretariadeambiente.gov.co/arcgis/rest/services/Educacion/Recorridos_Ecologicos/MapServer"
+             //                    //url: "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Agua_WQI/Cal_Agua_WQI/MapServer?f=pjson"
+             //                    //url:"http://udistritalfjc.maps.arcgis.com/home/webmap/viewer.html?webmap=3e67fb2dc44d4675a73b02bc60b7da5e"
+             //                    //url: "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Educacion/Recorridos_Ecologicos/MapServer"
+             //                    //url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Aulas_Ambientales/Aulas_Ambientales_Pto_Int_Aula/MapServer"
+             //                    url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Aire/Cal_Aire/MapServer/1"
+             //                   });
+            // let layer = new TileLayer({
+            //     url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Aire/Cal_Aire/MapServer/1"
+            // });
+            let layer0 = new TileLayer({
+                url: "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Agua_WQI/Cal_Agua_WQI/MapServer?f=pjson"
+                
+            });
+            let layer = new FeatureLayer({
+                url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Aire/Cal_Aire/MapServer/1",
+                visible:false
+            });
+            let layer2 = new FeatureLayer({
+                url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Aire/Cal_Aire/MapServer/3",
+                 visible:false
+            });
+
+
+            let layer3 = new TileLayer({
+                url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Educacion/Recorridos_Ecologicos/MapServer",
+                visible:false
+            });
+            
+             
+          
+            let layer4 = new TileLayer({
+                url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Participacion/Participacion_TerrAmb/MapServer",
+                visible:false
+            });
+
+             map.add(layer);
+             map.add(layer0);
+             map.add(layer2);
+             map.add(layer3);
+             map.add(layer4);
+             // map.add(layer5);
+             let leg  = new Legend({
+                view: mapView
+             });
+             mapView.ui.add(leg);
+             
+});
+       
+                 
+  
+    </script>
+</body>
+</html>
