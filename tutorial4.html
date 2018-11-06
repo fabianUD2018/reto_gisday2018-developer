@@ -35,9 +35,9 @@
             "esri/widgets/Legend",
             "esri/layers/FeatureLayer", 
             "esri/layers/TileLayer", 
-             
+             "esri/widgets/LayerList"
             
-        ], function(Map, MapView,  Request, MapImageLayer, Legend, FeatureLayer, TileLayer) {
+        ], function(Map, MapView,  Request, MapImageLayer, Legend, FeatureLayer, TileLayer, LayerList) {
              map = new Map ({
                 basemap: "topo"
             });
@@ -53,13 +53,13 @@
       
 				// Add widget to the top right corner of the view
 				
-            let layer0 = new TileLayer({
+            let calidadAgua = new TileLayer({
                 url: "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Agua_WQI/Cal_Agua_WQI/MapServer?f=pjson",
                 visible:false
 
             });
             
-             let layerdetA = new FeatureLayer({
+             let deterAmb = new FeatureLayer({
                 url: "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Determinantes_Ambientales/Determinantes_Amb/MapServer/3",
                 visible:false
                 
@@ -68,47 +68,46 @@
 
              let layerTemp = new FeatureLayer({
              	url: "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Aire/Cal_Aire/MapServer/17"
-
              });
 
             let layer = new FeatureLayer({
                 url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Aire/Cal_Aire/MapServer/1",
                 visible:false
             });
-            let layer2 = new FeatureLayer({
+            let calAire3 = new FeatureLayer({
                 url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Aire/Cal_Aire/MapServer/3",
                  visible:false
 
             });
 
 
-            let layer3 = new TileLayer({
+            let recorr = new TileLayer({
                 url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Educacion/Recorridos_Ecologicos/MapServer",
                 visible:false
             });
             
              
           
-            let layer4 = new TileLayer({
+            let pTerr = new TileLayer({
                 url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Participacion/Participacion_TerrAmb/MapServer",
                 visible:false
             });
             //
-            let layer5 = new MapImageLayer({
+            let cSueloR = new MapImageLayer({
                 url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Suelo/Cal_Suelo_Gen_RCD/MapServer",
                  visible:false
             });
 
-            let layer6 = new MapImageLayer({
+            let cSueloHosp = new MapImageLayer({
                 url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Suelo/Cal_Suelo_Respel_Hosp/MapServer",
                  visible:false
             });
 
-            let layer7 = new MapImageLayer({
+            let cSueloIndus = new MapImageLayer({
                 url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Suelo/Cal_Suelo_Respel_Indust/MapServer",
                 visible:false
             });
-            let layer8 = new MapImageLayer({
+            let calidadSuelo = new MapImageLayer({
                 url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Suelo/Cal_Suelo_Sitio_Dispos_2017/MapServer",
                 visible:false
             });
@@ -118,26 +117,33 @@
            
              
             let layerArboles = new TileLayer({
-            	url:"http://www.secretariadeambiente.gov.co/arcgis/rest/services/Arbolado_Urbano/SIA_SIGAU/MapServer"
+            	url:"http://www.secretariadeambiente.gov.co/arcgis/rest/services/Arbolado_Urbano/SIA_SIGAU/MapServer",
+            	visible:false
             });
-
+            
             map.add(layer);
-            map.add(layer0);
-            map.add(layer2);
-            map.add(layer3);
-            map.add(layer4);
-            map.add(layerdetA);
+            map.add(calidadAgua);
+            map.add(calAire3);
+            map.add(recorr);
+            map.add(pTerr);
+            map.add(deterAmb);
             map.add(layerTemp);
             map.add(layerArboles);
-            map.add(layer5);
-             map.add(layer6);
-             map.add(layer7);
-             map.add(layer8);
+            map.add(cSueloR);
+            map.add(cSueloHosp);
+            map.add(cSueloIndus);
+            map.add(calidadSuelo);
 
-             let leg  = new Legend({
+
+            let leg  = new Legend({
                 view: mapView
-             });
-             mapView.ui.add(leg);
+            });
+
+            let list = new LayerList({
+            	view:mapView
+            });
+            mapView.ui.add(list, "top-right");
+            mapView.ui.add(leg);
          
              
 });
