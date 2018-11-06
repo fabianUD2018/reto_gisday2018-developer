@@ -35,8 +35,9 @@
             "esri/widgets/Legend",
             "esri/layers/FeatureLayer", 
             "esri/layers/TileLayer", 
-            
-        ], function(Map, MapView, Request, MapImageLayer, Legend, FeatureLayer, TileLayer) {
+            "esri/layers/SceneLayer",
+            "esri/layers/ImageryLayer",
+        ], function(Map, MapView, Request, MapImageLayer, Legend, FeatureLayer, TileLayer,SceneLayer, ImageryLayer) {
              map = new Map ({
                 basemap: "topo"
             });
@@ -66,8 +67,8 @@
             //     url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Aire/Cal_Aire/MapServer/1"
             // });
             let layer0 = new TileLayer({
-                url: "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Agua_WQI/Cal_Agua_WQI/MapServer?f=pjson"
-                
+                url: "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Agua_WQI/Cal_Agua_WQI/MapServer?f=pjson",
+                visible:false
             });
             let layer = new FeatureLayer({
                 url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Aire/Cal_Aire/MapServer/1",
@@ -90,13 +91,41 @@
                 url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Participacion/Participacion_TerrAmb/MapServer",
                 visible:false
             });
+            //
+            let layer5 = new MapImageLayer({
+                url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Suelo/Cal_Suelo_Gen_RCD/MapServer",
+                 visible:false
+            });
 
+            let layer6 = new MapImageLayer({
+                url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Suelo/Cal_Suelo_Respel_Hosp/MapServer",
+                 visible:false
+            });
+
+            let layer7 = new MapImageLayer({
+                url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Suelo/Cal_Suelo_Respel_Indust/MapServer",
+                visible:false
+            });
+            let layer8 = new MapImageLayer({
+                url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Calidad_Suelo/Cal_Suelo_Sitio_Dispos_2017/MapServer",
+                visible:false
+            });
+
+            let layer9 = new MapImageLayer({
+                url : "http://www.secretariadeambiente.gov.co/arcgis/rest/services/Arbolado_Urbano/SIA_SIGAU/MapServer"
+                
+            });
+            //
              map.add(layer);
              map.add(layer0);
              map.add(layer2);
              map.add(layer3);
              map.add(layer4);
-             // map.add(layer5);
+             map.add(layer5);
+             map.add(layer6);
+             map.add(layer7);
+             map.add(layer8);
+             map.add(layer9);
              let leg  = new Legend({
                 view: mapView
              });
